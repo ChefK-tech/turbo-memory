@@ -55,15 +55,65 @@ end top_basys3;
 
 architecture top_basys3_arch of top_basys3 is 
 	
-    -- declare the component of your top-level design
-
-    -- declare any signals you will need	
+    -- declare the component of your top-level design  
+    component full_adder is
+        port (
+            A     : in std_logic;
+            B     : in std_logic;
+            Cin   : in std_logic;
+            S     : out std_logic;
+            Cout  : out std_logic
+            );
+    end component full_adder;
+    
+    -- Declare any signals you will need
+    signal A : STD_LOGIC_VECTOR (3 downto 0);
+    signal B : STD_LOGIC_VECTOR (3 downto 0);
+    signal S : STD_LOGIC_VECTOR (3 downto 0);
+    signal w_carry  : STD_LOGIC_VECTOR(3 downto 0); -- for ripple between adders
   
 begin
+   A <= sw(4 downto 1);
+   B <= sw(15 downto 12);
 	-- PORT MAPS --------------------
-   
+   full_adder_0: full_adder
+    port map(
+        A     => A(0),
+        B     => B(0),
+        Cin   => sw(0),   -- Directly to input here
+        S     => S(0),
+        Cout  => w_carry(0)
+    );
+
+    full_adder_1: full_adder
+    port map(
+        A     => A(1),
+        B     => B(1),
+        Cin   => w_carry(0),
+        S     => S(1),
+        Cout  => w_carry(1)
+    );
+    
+    full_adder_2: full_adder
+    port map(
+        A     => A(2),
+        B     => B(2),
+        Cin   => w_carry(1),
+        S     => S(2),
+        Cout  => w_carry(2)
+    );
+    
+    full_adder_3: full_adder
+    port map(
+        A     => A(3),
+        B     => B(3),
+        Cin   => w_carry(2),
+        S     => S(3),
+        Cout  => w_carry(3)
+    );
 	---------------------------------
-	
+	led(3 downto 0) <= S;
+	led(15) <= w_carry(3);
 	-- CONCURRENT STATEMENTS --------
 	led(14 downto 4) <= (others => '0'); -- Ground unused LEDs
 	---------------------------------

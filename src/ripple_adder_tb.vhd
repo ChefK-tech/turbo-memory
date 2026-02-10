@@ -48,7 +48,19 @@ begin
        -- Test all ones input
        w_addends <= x"FF"; w_Cin <= '1'; wait for 10 ns;
 	       assert (w_sum = x"F" and w_Cout = '1') report "bad with ones" severity failure;
-       -- TODO, a few other test cases
+       -- All inputs zeros except Cin
+       w_addends <= x"00"; w_Cin <= '1'; wait for 10 ns;
+	       assert (w_sum = x"1" and w_Cout = '0') report "bad with Cin" severity failure;
+	   -- All inputs ones except Cin
+       w_addends <= x"FF"; w_Cin <= '0'; wait for 10 ns;
+	       assert (w_sum = x"E" and w_Cout = '1') report "bad with inputs" severity failure;
+	   -- Random inputs
+       w_addends <= x"FF"; w_Cin <= '0'; wait for 10 ns;
+	       assert (w_sum = x"E" and w_Cout = '1') report "bad with random1" severity failure;
+       -- Random inputs
+       w_addends <= x"F0"; w_Cin <= '0'; wait for 10 ns;
+	       assert (w_sum = x"6" and w_Cout = '0') report "bad with random2" severity failure;
+
 	
 		wait; -- wait forever
 	end process;	

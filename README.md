@@ -10,6 +10,14 @@ Tested on Vivado 2024.2
 
 ---
 
+![screenshot of simulation when all inputs are one except Cin](waveform.png)
+
+![quick overview of current ripple adder](sketch.png)
+
+## Documentation
+
+None
+
 ## GitHub Actions Testbench
 
 The workflow uses the [setup-ghdl-ci](https://github.com/ghdl/setup-ghdl-ci) GitHub action
